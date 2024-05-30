@@ -21,6 +21,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TODO_TABLE = "todo";
     private static final String ID = "id";
     private static final String TASK = "task";
+
+    private static final String DESC = "desc";
     private static final String STATUS = "status";
     private static final String CREATE_TODO_TABLE = "CREATE TABLE " + TODO_TABLE + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TASK + " TEXT, "
             + STATUS + " INTEGER)";
@@ -50,7 +52,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public void insertTask(ToDoModel task){
         ContentValues cv = new ContentValues();
-        cv.put(TASK, task.getTask());
+        String info = task.getTask();
+        cv.put(TASK, info);
+
         cv.put(STATUS, 0);
         db.insert(TODO_TABLE, null, cv);
     }

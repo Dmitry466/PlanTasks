@@ -2,7 +2,7 @@ package com.example.plantasks.model;
 
 public class ToDoModel {
     private int id, status;
-    private String task;
+    private String task,desc;
 
     public int getId() {
         return id;
@@ -27,4 +27,13 @@ public class ToDoModel {
     public void setTask(String task) {
         this.task = task;
     }
+
+    public String getDesc() {
+        return task;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
 }

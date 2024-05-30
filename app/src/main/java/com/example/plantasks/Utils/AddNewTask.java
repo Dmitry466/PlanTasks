@@ -27,9 +27,11 @@ public class AddNewTask extends BottomSheetDialogFragment {
 
     public static final String TAG = "ActionBottomDialog";
     private EditText newTaskText;
+    private EditText newTaskDescription;
     private Button newTaskSaveButton;
 
     private DatabaseHandler db;
+
 
     public static AddNewTask newInstance(){
         return new AddNewTask();
@@ -56,6 +58,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         newTaskText = requireView().findViewById(R.id.newTaskText);
+        newTaskDescription = requireView().findViewById(R.id.newTaskDescription);
         newTaskSaveButton = requireView().findViewById(R.id.newTaskButton);
 
         boolean isUpdate = false;
@@ -64,7 +67,21 @@ public class AddNewTask extends BottomSheetDialogFragment {
         if(bundle != null){
             isUpdate = true;
             String task = bundle.getString("task");
-            newTaskText.setText(task);
+            String[] info = task.split("\n\n");
+            Integer i = 0;
+            String name = "";
+            String descr = "";
+            for (String info1 : info) {
+                if (i == 0) {
+                    name = name+info1;
+                }
+                else{
+                    descr= descr+info1;
+                }
+                i = i+1;
+            }
+            newTaskText.setText(name);
+            newTaskDescription.setText(descr);
             assert task != null;
             if(task.length()>0)
                 newTaskSaveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
@@ -98,12 +115,14 @@ public class AddNewTask extends BottomSheetDialogFragment {
         final boolean finalIsUpdate = isUpdate;
         newTaskSaveButton.setOnClickListener(v -> {
             String text = newTaskText.getText().toString();
+            String desc = newTaskDescription.getText().toString();
+
             if(finalIsUpdate){
-                db.updateTask(bundle.getInt("id"), text);
+                db.updateTask(bundle.getInt("id"), text+"\n\n"+desc);
             }
             else {
                 ToDoModel task = new ToDoModel();
-                task.setTask(text);
+                task.setTask(text+"\n\n"+desc);
                 task.setStatus(0);
                 db.insertTask(task);
             }

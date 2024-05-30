@@ -43,6 +43,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
         final ToDoModel item = todoList.get(position);
         holder.task.setText(item.getTask());
+        holder.task.setText(item.getDesc());
         holder.task.setChecked(toBoolean(item.getStatus()));
         holder.task.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -82,7 +83,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         ToDoModel item = todoList.get(position);
         Bundle bundle = new Bundle();
         bundle.putInt("id", item.getId());
-        bundle.putString("task", item.getTask());
+        bundle.putString("task", item.getDesc());
+
         AddNewTask fragment = new AddNewTask();
         fragment.setArguments(bundle);
         fragment.show(activity.getSupportFragmentManager(), AddNewTask.TAG);
